@@ -14,6 +14,8 @@ logstash -> kafka -> logstash -> elk
 But because I am playing at this point Riemann is used to pull from kafka and
 push into elasticsearch
 
+If you use docker-machine please set the environmental variable `DOCKER_HOST_IP`
+to the IP address of the docker host as shown by running `docker-machine env`
 
 Reference:
 https://jakubbujny.com/2018/08/19/stream-microservices-logs-how-riemann-simplify-things/
