@@ -24,6 +24,20 @@
       (expired
         (fn [event] (info "expired" event))))))
 
+;(def elastic
+;  (elasticsearch {:es-endpoint "http://elasticsearch:9200"
+;                  :es-index "riemann"
+;                  :index-suffix "-yyyy.MM.dd"
+;                  :type "event"}
+;                  (fn [event]
+;                        (merge event {}))))
+;
+;(kafka-consumer {:consumer.config {:bootstrap.servers "kafka:9092"
+;                                   :group.id "riemann"}
+;                 :topics ["program-logs"]})
+;
+;(streams
+;  elastic)
 
 (def graph
   (graphite {:host "carbon-clickhouse"}))

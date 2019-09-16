@@ -39,17 +39,13 @@ services:
       - elasticsearch
 
   clickhouse:
-    image: yandex/clickhouse-server
+    image: yandex/clickhouse-server:19.6.2.11
     hostname: clickhouse
-    ports:
-      - 8123:8123
-      - 9000:9000
-      - 9009:9009
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 262144
-        hard: 262144
+    volumes:
+      - "./rollup.xml:/etc/clickhouse-server/config.d/rollup.xml"
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./data/clickhouse/data:/var/lib/clickhouse/data"
+      - "./data/clickhouse/metadata:/var/lib/clickhouse/metadata"
     depends_on:
       - zookeeper
 
@@ -78,27 +74,30 @@ services:
     depends_on:
       - elasticsearch
 
+  carbon-clickhouse:
+    image: lomik/carbon-clickhouse:v0.10.2
+    hostname: carbon-clickhouse
+    volumes:
+      - "./data/carbon-clickhouse:/data/carbon-clickhouse"
+      - "./carbon-clickhouse.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+    ports:
+      - "2003:2003" # plain tcp
+      - "2004:2004" # pickle
+      - "2006:2006" # prometheus remote write
+    depends_on:
+      - clickhouse
+
   graphite-clickhouse:
-    image: mosquito/graphite-clickhouse
+    image: lomik/graphite-clickhouse:v0.11.1
     hostname: graphite-clickhouse
-    environment:
-      CLICKHOUSE_URL: http://clickhouse:8123
+    volumes:
+      - "./rollup.xml:/etc/graphite-clickhouse/rollup.xml"
+      - "./graphite-clickhouse.conf:/etc/graphite-clickhouse/graphite-clickhouse.conf"
     ports:
       - 9090:9090
     depends_on:
       - clickhouse
-
-  carbon-clickhouse:
-    image: mosquito/carbon-clickhouse
-    hostname: carbon-clickhouse
-    environment:
-      CLICKHOUSE_URL: http://clickhouse:8123
-    ports:
-      - 2003:2003
-      - 2004:2004
-      - 2005:2005
-    depends_on:
-      - clickhouse
+      - carbon-clickhouse
 
   carbonapi:
     image: mosquito/carbonapi
@@ -138,4 +137,12 @@ services:
     image: docker.elastic.co/logstash/logstash:7.3.1
     hostname: logstash-post
     depends_on:
-    - elasticsearch
+      - elasticsearch
+
+  collectd:
+    image: collectd
+    hostname: collectd
+    volumes:
+        - ./collectd.conf:/etc/collectd/collectd.conf
+    depends_on:
+      - kafka
