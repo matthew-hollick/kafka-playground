@@ -16,6 +16,7 @@ services:
     hostname: kafka
     ports:
       - "9092:9092"
+      - "19092:19092"
     environment:
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
@@ -87,53 +88,53 @@ services:
       - "2006:2006" # prometheus remote write
     depends_on:
       - clickhouse
-
-  graphite-clickhouse:
-    image: lomik/graphite-clickhouse:v0.11.1
-    hostname: graphite-clickhouse
-    volumes:
-      - "./rollup.xml:/etc/graphite-clickhouse/rollup.xml"
-      - "./graphite-clickhouse.conf:/etc/graphite-clickhouse/graphite-clickhouse.conf"
-    ports:
-      - 9090:9090
-    depends_on:
-      - clickhouse
-      - carbon-clickhouse
-
-  carbonapi:
-    image: mosquito/carbonapi
-    hostname: carbonapi
-    ports:
-      - 8080:8080
-    environment:
-      CONCURENCY: 20
-      CACHE_TYPE: mem
-      UPSTREAMS_BACKENDS: http://graphite-clickhouse:9090/
-      LISTEN: "0.0.0.0:8080"
-    depends_on:
-      - graphite-clickhouse
-
-  tabix:
-    image: spoonest/clickhouse-tabix-web-client
-    hostname: tabix
-    links:
-      - clickhouse
-    ports:
-      - 8090:80
-
-  grafana:
-    image: grafana/grafana
-    hostname: grafana
-    links:
-      - carbonapi
-    ports:
-      - 3000:3000
-    environment:
-      GF_SERVER_ROOT_URL: http://${DOCKER_HOST_IP:-127.0.0.1}:3000
-      GF_SECURITY_ADMIN_PASSWORD: secret
-    depends_on:
-      - carbonapi
-
+#
+#  graphite-clickhouse:
+#    image: lomik/graphite-clickhouse:v0.11.1
+#    hostname: graphite-clickhouse
+#    volumes:
+#      - "./rollup.xml:/etc/graphite-clickhouse/rollup.xml"
+#      - "./graphite-clickhouse.conf:/etc/graphite-clickhouse/graphite-clickhouse.conf"
+#    ports:
+#      - 9090:9090
+#    depends_on:
+#      - clickhouse
+#      - carbon-clickhouse
+#
+#  carbonapi:
+#    image: mosquito/carbonapi
+#    hostname: carbonapi
+#    ports:
+#      - 8080:8080
+#    environment:
+#      CONCURENCY: 20
+#      CACHE_TYPE: mem
+#      UPSTREAMS_BACKENDS: http://graphite-clickhouse:9090/
+#      LISTEN: "0.0.0.0:8080"
+#    depends_on:
+#      - graphite-clickhouse
+#
+#  tabix:
+#    image: spoonest/clickhouse-tabix-web-client
+#    hostname: tabix
+#    links:
+#      - clickhouse
+#    ports:
+#      - 8090:80
+#
+#  grafana:
+#    image: grafana/grafana
+#    hostname: grafana
+#    links:
+#      - carbonapi
+#    ports:
+#      - 3000:3000
+#    environment:
+#      GF_SERVER_ROOT_URL: http://${DOCKER_HOST_IP:-127.0.0.1}:3000
+#      GF_SECURITY_ADMIN_PASSWORD: secret
+#    depends_on:
+#      - carbonapi
+#
 #  logstash-post:
 #    image: docker.elastic.co/logstash/logstash:7.3.1
 #    hostname: logstash-post
