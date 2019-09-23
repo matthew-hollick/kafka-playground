@@ -24,3 +24,13 @@ https://github.com/deviantony/docker-elk
 https://github.com/mosquito/graphite-clickhouse
 and others that I have mislaid.
 
+# Building
+```
+cd Dockerfiles/collectd
+docker build -t collectd .
+```
+
+# Running
+```
+docker-compose up
+```
