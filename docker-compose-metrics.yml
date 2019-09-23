@@ -27,11 +27,23 @@ services:
     depends_on:
       - zookeeper
 
-  riemann:
+  riemannfront:
     image: riemannio/riemann:0.3.3
-    hostname: riemann
+    hostname: riemannfront
     volumes:
-      - ./riemann.config:/etc/riemann.config
+      - ./riemannfront.config:/etc/riemann.config
+    environment:
+      - HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
+    ports:
+      - "3003:3003" # graphite port (shifted to avoid conflict with carbon-clickhouse)
+    depends_on:
+      - kafka
+
+  riemannback:
+    image: riemannio/riemann:0.3.3
+    hostname: riemannback
+    volumes:
+      - ./riemannfront.config:/etc/riemann.config
     environment:
       - HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
     depends_on:
@@ -66,3 +78,4 @@ services:
         - ./collectd.conf:/etc/collectd/collectd.conf
     depends_on:
       - kafka
+      - riemannfront

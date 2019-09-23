@@ -1,0 +1,134 @@
+INFO [2019-09-23 10:23:39,863] clojure-agent-send-off-pool-1 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:39,863] clojure-agent-send-off-pool-3 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:39,863] clojure-agent-send-off-pool-0 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:39,863] clojure-agent-send-off-pool-2 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:51,520] clojure-agent-send-off-pool-1 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:51,520] clojure-agent-send-off-pool-0 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:51,520] clojure-agent-send-off-pool-2 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:51,520] clojure-agent-send-off-pool-3 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:56,533] clojure-agent-send-off-pool-3 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:56,533] clojure-agent-send-off-pool-0 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:56,533] clojure-agent-send-off-pool-2 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:23:56,533] clojure-agent-send-off-pool-1 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:24,416] clojure-agent-send-off-pool-3 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:24,416] clojure-agent-send-off-pool-0 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:24,416] clojure-agent-send-off-pool-2 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:24,416] clojure-agent-send-off-pool-1 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:29,429] clojure-agent-send-off-pool-1 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:29,429] clojure-agent-send-off-pool-3 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:29,429] clojure-agent-send-off-pool-0 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:24:29,429] clojure-agent-send-off-pool-2 - riemann.graphite - Connecting to  {:host carbon-clickhouse, :port 2003}
+INFO [2019-09-23 10:27:35,067] main - org.apache.kafka.clients.producer.ProducerConfig - ProducerConfig values: 
+	acks = 0
+	batch.size = 16384
+	bootstrap.servers = [xxx:9092]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = null
+	key.serializer = class kinsky.client$serializer$reify__10986
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class kinsky.client$serializer$reify__10986
+
+WARN [2019-09-23 10:27:35,306] main - org.apache.kafka.clients.ClientUtils - Removing server xxx:9092 from bootstrap.servers as DNS resolution failed for xxx
+INFO [2019-09-23 10:27:35,310] main - org.apache.kafka.clients.producer.KafkaProducer - [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 0 ms.
+INFO [2019-09-23 10:28:16,756] main - org.apache.kafka.clients.producer.ProducerConfig - ProducerConfig values: 
+	acks = 0
+	batch.size = 16384
+	bootstrap.servers = [127.0.0.1:9092]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = null
+	key.serializer = class kinsky.client$serializer$reify__10986
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class kinsky.client$serializer$reify__10986
+
+INFO [2019-09-23 10:28:16,881] main - org.apache.kafka.common.utils.AppInfoParser - Kafka version : 1.0.0
+INFO [2019-09-23 10:28:16,881] main - org.apache.kafka.common.utils.AppInfoParser - Kafka commitId : aaa7af6d4a11b29d
