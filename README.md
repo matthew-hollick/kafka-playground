@@ -1,21 +1,36 @@
-Working on:
+First build a couple of containers
+```
+docker-compose -f docker-compose-logs.yml build
+```
+
+Then Metrics work:
 
 ```
-collectd -> kafka -> thing -> carbon-clickhouse -> clickhouse -> graphite-clickhouse -> carbonapi -> grafana
+docker-compose -f docker-compose-metrics.yml up
 ```
-where currently "thing" is Riemann but this might change. Fluentd might be an
-option
+Expect loads of errors as it gets running.
+Then you have:
+```
+collectd -> riemann -> kafka -> riemann -> carbon-clickhouse -> clickhouse -> graphite-clickhouse -> carbonapi -> grafana
+```
+```
+haggar -> riemann -> kafka -> riemann -> carbon-clickhouse -> clickhouse -> graphite-clickhouse -> carbonapi -> grafana
+```
+Grafana is available on port 3000
 
-and:
+Logs kind of work:
 
 ```
-logstash -> kafka -> logstash -> elk
+docker-compose -f docker-compose-logs.yml up
 ```
-But because I am playing at this point Riemann is used to pull from kafka and
-push into elasticsearch
+Expect loads of errors as it gets running.
+Then you have:
+```
+logger -> logstash -> kafka -> logstash -> elasticsearch -> kibana
+```
+Kibana is available on port 5601
 
-If you use docker-machine please set the environmental variable `DOCKER_HOST_IP`
-to the IP address of the docker host as shown by running `docker-machine env`
+Log formatting is all screwed up..
 
 Reference:
 https://jakubbujny.com/2018/08/19/stream-microservices-logs-how-riemann-simplify-things/
