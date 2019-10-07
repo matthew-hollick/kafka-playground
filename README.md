@@ -33,9 +33,13 @@ Kibana is available on port 5601
 Log formatting is all screwed up..
 
 Reference:
-https://jakubbujny.com/2018/08/19/stream-microservices-logs-how-riemann-simplify-things/
-https://github.com/pyr/riemann-kafka
-https://github.com/deviantony/docker-elk
-https://github.com/mosquito/graphite-clickhouse
-and others that I have mislaid.
 
+https://jakubbujny.com/2018/08/19/stream-microservices-logs-how-riemann-simplify-things/
+
+https://github.com/pyr/riemann-kafka
+
+https://github.com/deviantony/docker-elk
+
+https://github.com/mosquito/graphite-clickhouse
+
+and others that I have mislaid.
