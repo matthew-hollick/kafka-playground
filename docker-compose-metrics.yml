@@ -111,3 +111,15 @@ services:
     depends_on:
       - kafka
       - riemannfront
+
+  haggar:
+    build:
+       dockerfile: haggar.dockerfile
+       context: ./Dockerfiles
+    hostname: haggar
+    environment:
+       AGENTS: 100
+       INTERVAL: 2
+       JITTER: 1
+       METRICS: 100
+       SPAWN: 5
