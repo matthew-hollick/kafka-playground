@@ -118,8 +118,8 @@ services:
        context: ./Dockerfiles
     hostname: haggar
     environment:
-       AGENTS: 100
-       INTERVAL: 2
-       JITTER: 1
-       METRICS: 100
-       SPAWN: 5
+       AGENTS: ${AGENTS}
+       INTERVAL: ${INTERVAL}
+       JITTER: ${JITTER}
+       METRICS: ${METRICS}
+       SPAWN: ${SPAWN}
