@@ -17,9 +17,9 @@ services:
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER://127.0.0.1:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER
+      KAFKA_ADVERTISED_LISTENERS: LISTENER://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_BROKER_ID: 1
       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
@@ -32,8 +32,6 @@ services:
     hostname: riemannfront
     volumes:
       - ./riemannfront.config:/etc/riemann.config
-    environment:
-      - HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
     ports:
       - "3003:3003" # graphite port (shifted to avoid conflict with carbon-clickhouse)
     depends_on:
@@ -43,9 +41,7 @@ services:
     image: riemannio/riemann:0.3.3
     hostname: riemannback
     volumes:
-      - ./riemannfront.config:/etc/riemann.config
-    environment:
-      - HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
+      - ./riemannback.config:/etc/riemann.config
     depends_on:
       - kafka
 
@@ -55,6 +51,8 @@ services:
     volumes:
       - "./rollup.xml:/etc/clickhouse-server/config.d/rollup.xml"
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    ports:
+      - "8123:8123"
     depends_on:
       - zookeeper
 
@@ -71,8 +69,42 @@ services:
     depends_on:
       - clickhouse
 
+  graphite-clickhouse:
+    image: lomik/graphite-clickhouse:v0.11.1
+    volumes:
+      - "./rollup.xml:/etc/graphite-clickhouse/rollup.xml"
+      - "./graphite-clickhouse.conf:/etc/graphite-clickhouse/graphite-clickhouse.conf"
+    depends_on:
+      - clickhouse
+
+  carbonapi:
+    image: mosquito/carbonapi
+    hostname: carbonapi
+    ports:
+      - 8080:8080
+    environment:
+      CONCURENCY: 20
+      CACHE_TYPE: mem
+      UPSTREAMS_BACKENDS: http://graphite-clickhouse:9090/
+      LISTEN: "0.0.0.0:8080"
+    depends_on:
+      - graphite-clickhouse
+
+  grafana:
+    image: grafana/grafana
+    hostname: grafana
+    ports:
+      - 3000:3000
+    environment:
+      GF_SERVER_ROOT_URL: http://0.0.0.0:3000
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    depends_on:
+      - carbonapi
+
   collectd:
-    image: collectd
+    build:
+       dockerfile: collectd.dockerfile
+       context: ./Dockerfiles
     hostname: collectd
     volumes:
         - ./collectd.conf:/etc/collectd/collectd.conf
