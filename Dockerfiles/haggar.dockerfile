@@ -6,5 +6,5 @@ CMD haggar -agents=${AGENTS}               \
              -flush-interval=${INTERVAL}s  \
              -jitter=${JITTER}s            \
              -metrics=${METRICS}           \
-             -prefix="haggar"              \
+             -prefix="${PREFIX}"           \
              -spawn-interval=${SPAWN}s

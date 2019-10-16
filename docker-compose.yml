@@ -56,16 +56,51 @@ services:
     depends_on:
       - zookeeper
 
-  carbon-clickhouse:
-    image: lomik/carbon-clickhouse:v0.10.2
-    hostname: carbon-clickhouse
+  carbon-relay-ng:
+    image: raintank/carbon-relay-ng
+    hostname: carbon-relay-ng
     volumes:
-      - "./data/carbon-clickhouse:/data/carbon-clickhouse"
-      - "./carbon-clickhouse.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+      - ./carbon-relay-ng.ini:/conf/carbon-relay-ng.ini
     ports:
-      - "2003:2003" # plain tcp
-      - "2004:2004" # pickle
-      - "2006:2006" # prometheus remote write
+      - "2003:2003"
+      - "8081:8081"
+
+  carbon-clickhouse1:
+    build:
+      dockerfile: carbon-clickhouse.dockerfile
+      context: ./Dockerfiles
+    hostname: carbon-clickhouse1
+    volumes:
+      - "./data/carbon-clickhouse1:/data/carbon-clickhouse"
+      - "./carbon-clickhouse1.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+    ports:
+      - "2013:2013" # plain tcp
+    depends_on:
+      - clickhouse
+
+  carbon-clickhouse2:
+    build:
+      dockerfile: carbon-clickhouse.dockerfile
+      context: ./Dockerfiles
+    hostname: carbon-clickhouse2
+    volumes:
+      - "./data/carbon-clickhouse2:/data/carbon-clickhouse"
+      - "./carbon-clickhouse2.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+    ports:
+      - "2023:2023" # plain tcp
+    depends_on:
+      - clickhouse
+
+  carbon-clickhouse3:
+    build:
+      dockerfile: carbon-clickhouse.dockerfile
+      context: ./Dockerfiles
+    hostname: carbon-clickhouse3
+    volumes:
+      - "./data/carbon-clickhouse3:/data/carbon-clickhouse"
+      - "./carbon-clickhouse3.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+    ports:
+      - "2033:2033" # plain tcp
     depends_on:
       - clickhouse
 
@@ -112,7 +147,7 @@ services:
       - kafka
       - riemannfront
 
-  haggar:
+  load-1:
     build:
        dockerfile: haggar.dockerfile
        context: ./Dockerfiles
@@ -123,3 +158,30 @@ services:
        JITTER: ${JITTER}
        METRICS: ${METRICS}
        SPAWN: ${SPAWN}
+       PREFIX: load1
+
+  load-2:
+    build:
+       dockerfile: haggar.dockerfile
+       context: ./Dockerfiles
+    hostname: haggar
+    environment:
+       AGENTS: ${AGENTS}
+       INTERVAL: ${INTERVAL}
+       JITTER: ${JITTER}
+       METRICS: ${METRICS}
+       SPAWN: ${SPAWN}
+       PREFIX: load2
+ 
+  load-3:
+    build:
+       dockerfile: haggar.dockerfile
+       context: ./Dockerfiles
+    hostname: haggar
+    environment:
+       AGENTS: ${AGENTS}
+       INTERVAL: ${INTERVAL}
+       JITTER: ${JITTER}
+       METRICS: ${METRICS}
+       SPAWN: ${SPAWN}
+       PREFIX: load3
