@@ -100,7 +100,9 @@ services:
       - graphite-clickhouse
 
   grafana:
-    image: grafana/grafana
+    build:
+       dockerfile: grafana.dockerfile
+       context: ./Dockerfiles
     hostname: grafana
     ports:
       - 3000:3000
