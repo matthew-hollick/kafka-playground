@@ -65,42 +65,16 @@ services:
       - "2003:2003"
       - "8081:8081"
 
-  carbon-clickhouse1:
+  carbon-clickhouse:
     build:
       dockerfile: carbon-clickhouse.dockerfile
       context: ./Dockerfiles
     hostname: carbon-clickhouse1
     volumes:
-      - "./data/carbon-clickhouse1:/data/carbon-clickhouse"
-      - "./carbon-clickhouse1.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
+      - "./data/carbon-clickhouse:/data/carbon-clickhouse"
+      - "./carbon-clickhouse.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
     ports:
       - "2013:2013" # plain tcp
-    depends_on:
-      - clickhouse
-
-  carbon-clickhouse2:
-    build:
-      dockerfile: carbon-clickhouse.dockerfile
-      context: ./Dockerfiles
-    hostname: carbon-clickhouse2
-    volumes:
-      - "./data/carbon-clickhouse2:/data/carbon-clickhouse"
-      - "./carbon-clickhouse2.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
-    ports:
-      - "2023:2023" # plain tcp
-    depends_on:
-      - clickhouse
-
-  carbon-clickhouse3:
-    build:
-      dockerfile: carbon-clickhouse.dockerfile
-      context: ./Dockerfiles
-    hostname: carbon-clickhouse3
-    volumes:
-      - "./data/carbon-clickhouse3:/data/carbon-clickhouse"
-      - "./carbon-clickhouse3.conf:/etc/carbon-clickhouse/carbon-clickhouse.conf"
-    ports:
-      - "2033:2033" # plain tcp
     depends_on:
       - clickhouse
 
@@ -172,7 +146,7 @@ services:
        METRICS: ${METRICS}
        SPAWN: ${SPAWN}
        PREFIX: load2
- 
+
   load-3:
     build:
        dockerfile: haggar.dockerfile
