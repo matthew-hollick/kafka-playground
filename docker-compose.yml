@@ -56,6 +56,7 @@ services:
     depends_on:
       - zookeeper
 
+<<<<<<< HEAD:docker-compose.yml
 #  carbon-relay-ng:
 #    image: raintank/carbon-relay-ng
 #    hostname: carbon-relay-ng
@@ -75,6 +76,16 @@ services:
       - "2003:2003"
     depends_on:
       - carbon-clickhouse
+=======
+  carbon-relay-ng:
+    image: raintank/carbon-relay-ng
+    hostname: carbon-relay-ng
+    volumes:
+      - ./carbon-relay-ng.ini:/conf/carbon-relay-ng.ini
+    ports:
+      - "2003:2003"
+      - "8081:8081"
+>>>>>>> f3463e0308ec4ca4dc873f04b81c4b5ac81fe1a7:docker-compose.yml
 
   carbon-clickhouse:
     build:
@@ -113,7 +124,9 @@ services:
       - graphite-clickhouse
 
   grafana:
-    image: grafana/grafana
+    build:
+       dockerfile: grafana.dockerfile
+       context: ./Dockerfiles
     hostname: grafana
     ports:
       - 3000:3000
