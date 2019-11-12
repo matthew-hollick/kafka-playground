@@ -56,14 +56,25 @@ services:
     depends_on:
       - zookeeper
 
-  carbon-relay-ng:
-    image: raintank/carbon-relay-ng
-    hostname: carbon-relay-ng
+#  carbon-relay-ng:
+#    image: raintank/carbon-relay-ng
+#    hostname: carbon-relay-ng
+#    volumes:
+#      - ./carbon-relay-ng.ini:/conf/carbon-relay-ng.ini
+#    ports:
+#      - "2003:2003"
+#      - "8081:8081"
+
+  carbon-c-relay:
+    build:
+      dockerfile: carbon-c-relay.dockerfile
+      context: ./Dockerfiles
     volumes:
-      - ./carbon-relay-ng.ini:/conf/carbon-relay-ng.ini
+      - "./carbon-c-relay.conf:/etc/carbon-c-relay/carbon-c-relay.conf"
     ports:
       - "2003:2003"
-      - "8081:8081"
+    depends_on:
+      - carbon-clickhouse
 
   carbon-clickhouse:
     build:
@@ -83,6 +94,8 @@ services:
     volumes:
       - "./rollup.xml:/etc/graphite-clickhouse/rollup.xml"
       - "./graphite-clickhouse.conf:/etc/graphite-clickhouse/graphite-clickhouse.conf"
+    ports:
+      - "9090:9090"
     depends_on:
       - clickhouse
 
