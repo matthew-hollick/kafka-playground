@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 
 services:
   zookeeper:
@@ -7,9 +7,9 @@ services:
     ports:
       - "2181:2181"
     environment:
-      ZOO_MY_ID: 1
-      ZOO_PORT: 2181
-      ZOO_SERVERS: server.1=zookeeper:2888:3888
+        ZOO_MY_ID: 1
+        ZOO_PORT: 2181
+        ZOO_SERVERS: server.1=zookeeper:2888:3888
 
   kafka:
     image: confluentinc/cp-kafka:5.3.0
@@ -28,59 +28,42 @@ services:
       - zookeeper
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICVERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.0
     hostname: elasticsearch
-    ports: 
-      - "9200:9200"
-      - "9300:9300"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+    ports:
+      - 9200:9200
+      - 9300:9300
     environment:
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:${ELASTICVERSION}
+    image: docker.elastic.co/kibana/kibana:6.8.0
     hostname: kibana
     ports:
-      - "5601:5601"
+      - 5601:5601
     depends_on:
       - elasticsearch
 
-  logstashfront:
-    image: docker.elastic.co/logstash/logstash:7.4.0
-    hostname: logstashfront
+  logstash-producer:
+    image: docker.elastic.co/logstash/logstash:7.3.1
+    hostname: logstash-producer
     volumes:
-      - ./logstashfront.conf:/logstashfront.conf
-    ports:
-      - "5001:5001"
-    entrypoint: logstash -f /logstashfront.conf
+      - ./logstash-producer/:/usr/share/logstash/pipeline/
     depends_on:
       - kafka
 
-  logstashback:
-    image: docker.elastic.co/logstash/logstash:7.4.0
-    hostname: logstashback
+  logstash-consumer:
+    image: docker.elastic.co/logstash/logstash:7.3.1
+    hostname: logstash-consumer
     volumes:
-      - ./logstashback.conf:/logstashback.conf
-    entrypoint: logstash -f /logstashback.conf
+      - ./logstash-consumer/:/usr/share/logstash/pipeline/
     depends_on:
       - elasticsearch
-
-  logger:
-    image: ubuntu
-    hostname: logger
-    environment:
-      LOGINTERVAL: ${LOGINTERVAL}
-      LOGHOST: ${LOGHOST}
-    volumes:
-      - "./logger.sh:/logger.sh"
-      - "./logfile:/logfile"
-    entrypoint: /logger.sh
-    depends_on:
-      - logstashfront
